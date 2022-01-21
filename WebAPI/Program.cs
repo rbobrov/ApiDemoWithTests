@@ -1,9 +1,8 @@
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddControllers();
+
 var app = builder.Build();
-
-app.MapGet("/{id}", (int id) => $"ÈÄ={id+1}");
-app.MapGet("/", () => "<div>Hello world!</div>");
-
+app.MapControllers();
 app.Run();
 
 public partial class Program { }
