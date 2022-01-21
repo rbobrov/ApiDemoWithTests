@@ -6,8 +6,8 @@ namespace TddApiDemoTest
 {
     public class APITest
     {
-        [Fact]
-        public async void TestHelloAPIRequest()
+        protected HttpClient _httpClient;
+        public APITest()
         {
             var application = new WebApplicationFactory<Program>()
                 .WithWebHostBuilder(builder =>
@@ -15,8 +15,13 @@ namespace TddApiDemoTest
                     // ... Configure test services
                 });
 
-            var client = application.CreateClient();
-            var responseHTML = await client.GetAsync("/");
+            _httpClient = application.CreateClient();
+        }
+
+        [Fact]
+        public async void TestHelloAPIRequest()
+        {
+            var responseHTML = await _httpClient.GetAsync("/");
             var contents = await responseHTML.Content.ReadAsStringAsync();
 
             Assert.Equal("<div>Hello world!</div>", contents);
@@ -24,16 +29,11 @@ namespace TddApiDemoTest
 
         [Theory]
         [InlineData(1,2)]
+        [InlineData(34,35)]
+        [InlineData(50,51)]
         public async void TestGetById(int requestedId, int returnedId)
         {
-            var application = new WebApplicationFactory<Program>()
-                .WithWebHostBuilder(builder =>
-                {
-                    // ... Configure test services
-                });
-
-            var client = application.CreateClient();
-            var responseHTML = await client.GetAsync($"/{requestedId}");
+            var responseHTML = await _httpClient.GetAsync($"/{requestedId}");
             var contents = await responseHTML.Content.ReadAsStringAsync();
 
             Assert.Equal($"ÈÄ={returnedId}", contents);
