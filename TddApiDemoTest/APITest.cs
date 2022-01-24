@@ -24,7 +24,7 @@ namespace TddApiDemoTest
             var responseHTML = await _httpClient.GetAsync("/");
             var contents = await responseHTML.Content.ReadAsStringAsync();
 
-            Assert.Equal("<div>Hello world!</div>", contents);
+            Assert.Equal("Hello world!", contents);
         }
 
         [Theory]

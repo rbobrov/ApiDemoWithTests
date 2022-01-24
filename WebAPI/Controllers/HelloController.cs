@@ -5,11 +5,19 @@ namespace WebAPI.Controllers
     [ApiController]
     public class HelloController : ControllerBase
     {
+        WebAPIContext _context;
+
+        public HelloController(WebAPIContext context)
+        {
+            _context = context;
+        }
+
         [Route("/")]
         [HttpGet]
         public ActionResult<string> Get()
         {
-            return "<div>Hello world!</div>";
+            return  _context.Counters.Select(c => c.Value).First();
+            //return "<div>Hello world!</div>";
         }
 
         [Route("/{id}")]
